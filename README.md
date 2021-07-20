@@ -1,4 +1,4 @@
-# GitHub Gists Search
+# User dashboard
 
 :white_check_mark: This project is create using [Reactjs](https://reactjs.org/docs/getting-started.html), [React-Hooks](https://reactjs.org/docs/hooks-intro.html), [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/).
 
