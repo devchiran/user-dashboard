@@ -1,0 +1,21 @@
+.user-post__title,
+.user-details__breadcrumb a,
+.user-details__breadcrumb p {
+    font-size: 1.7em;
+}
+.user-post__item {
+    list-style: none;
+    border-bottom: 1px solid lightgray;
+}
+
+@media only screen and (min-width : 1200px) {
+    .user-post__item {
+        border-bottom: 0;
+        margin-bottom: 24px;
+    }
+    .user-details__card,
+    .user-details__posts {
+        border: 1px solid lightgray;
+
+    }
+}

@@ -1,0 +1,14 @@
+.user-list__avatar .user-list__image {
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+}
+.user-list__item {
+    font-size: .85em;
+}
+.user-list__item p {
+    margin: 0;
+}
+.user-list__item:nth-child(odd) {
+    background-color: whitesmoke;
+}
