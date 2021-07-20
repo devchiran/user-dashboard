@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const url = 'http://jsonplaceholder.typicode.com'
+const url = 'https://jsonplaceholder.typicode.com'
 
 export const getUsers = async () => {
     const usersData = await axios
