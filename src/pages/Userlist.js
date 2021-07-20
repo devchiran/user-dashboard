@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import List from '../components/List/List'
+import Loader from '../components/Utils/Laoder'
 import { getUsers } from '../api/users'
 
 function Userlist() {
     const [users, setUsers] = useState([])
     const [visibleUsers, setVisibleUsers] = useState([])
     const [search, setSearch] = useState('')
+    const [sortby, setSortby] = useState('name')
+    const [sorting, setSorting] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchUsers = async () => {
             const allUsers = await getUsers();
             if (allUsers) {
+                setLoading(false)
                 setUsers(allUsers)
                 setVisibleUsers(allUsers)
+                setSorting(true)
             }
           }
           fetchUsers()
@@ -20,20 +26,29 @@ function Userlist() {
 
     useEffect(() => {
         if (search === "") {
-            setVisibleUsers(users);
+            setVisibleUsers(users)
+            setSorting(true)
         } else {
-            console.log("searching: " + search)
             let searchStr = search.toLowerCase()
             let filteredList = users.filter(user => {
                 return user.name.toLowerCase().indexOf(searchStr) >= 0 ||
                     user.username.toLowerCase().indexOf(searchStr) >= 0 ||
                     user.email.toLowerCase().indexOf(searchStr) >= 0
             })
-            console.log("list: " + JSON.stringify(filteredList))
             setVisibleUsers(filteredList)
+            setSorting(true)
         }
     }, [search, users])
 
+    /**
+     * Sort the display user list
+     */
+    const sortList = () => {
+        const sortedList = visibleUsers.sort((a, b) => {
+            return a[sortby].localeCompare(b[sortby])
+        })
+        setVisibleUsers([...sortedList]);
+    }
     /**
      * Handles the search input box entry and search within the list
      * @param {Object} e - Evevt details for search input box
@@ -49,10 +64,13 @@ function Userlist() {
      */
     const sortHandler = (e) => {
         const selectedValue = e.target.value.toLowerCase()
-        const sortedList = visibleUsers.sort((a, b) => {
-            return a[selectedValue].localeCompare(b[selectedValue])
-        })
-        setVisibleUsers([...sortedList])
+        setSortby(selectedValue)
+        setSorting(true)
+    }
+
+    if (sorting) {
+        sortList()
+        setSorting(false)
     }
 
     return (
@@ -75,7 +93,7 @@ function Userlist() {
                     </div>
                     <div className="filter-panel col-12 col-xl-2">
                         <span className="d-block">Sort By</span>
-                        <select className="form-select form-select-sm " onChange={sortHandler} aria-label="sortby .form-select-sm">
+                        <select className="list_sort-by form-select form-select-sm" onChange={sortHandler} aria-label="sortby .form-select-sm">
                             <option value="name" defaultValue>Name</option>
                             <option value="Username">Username</option>
                             <option value="Email">Email</option>
@@ -84,7 +102,7 @@ function Userlist() {
                 </div>
             </div>
             <div className="container p-0">
-                <List items={visibleUsers}/>
+                {loading ? <Loader /> : <List items={visibleUsers} />}
             </div>
         </>
     )
